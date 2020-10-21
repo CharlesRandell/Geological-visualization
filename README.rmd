@@ -1,7 +1,6 @@
 ---
+Title: "Plots for Msc Geology thesis"
 output: github_document
-  md_document:
-    variant: markdown_github
 ---
 
 # Purpose
