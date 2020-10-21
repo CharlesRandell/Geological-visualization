@@ -1,13 +1,15 @@
 ---
-Title: "Plots for Msc Geology thesis"
-output: github_document
+Title: README
+output:
+  md_document: default
+  github_document: default
 ---
 
-# Purpose
+# Geological visualization of elements
 
 The aim of this folder is to.... create a grouped box and whisker plot with the ggplot2 package that shows a variety of trace element concentrations in different forms of Carrollite in the central African Copperbelt 
 
-## load packages in R 
+load packages in R 
 
 ```{r}
 library(ggplot2) 
@@ -16,26 +18,49 @@ library(wesanderson)
 
 ```
 
-#### The use of ggplots2 to create the box and whisker
-## The grouped plots that will be used to test the geological data
+The use of ggplots2 to create the box and whisker
+The grouped plots that will be used to test the geological data
 
-### loading the excel data via clipboard
-### this will not work without it being copied!!
+loading the excel data via clipboard
+this will not work without it being copied!!
 
 ```{r}
-CarStrat <- read.table(pipe("pbpaste"), sep="\t", header = TRUE)
+# copying the data in 
 
-CarDissem <- read.table(pipe("pbpaste"), sep="\t", header = TRUE)
+#CarStrat <- read.table(pipe("pbpaste"), sep="\t", header = TRUE)
 
-CarCross <- read.table(pipe("pbpaste"), sep="\t", header = TRUE)
+#CarDissem <- read.table(pipe("pbpaste"), sep="\t", header = TRUE)
 
-CarJack <- read.table(pipe("pbpaste"), sep="\t", header = TRUE)
+#CarCross <- read.table(pipe("pbpaste"), sep="\t", header = TRUE)
+
+#CarJack <- read.table(pipe("pbpaste"), sep="\t", header = TRUE)
+
+# moving it to csv files for the knit function
+
+#write.csv(CarStrat,"/Users/charlesrandell/Other/Random projects/Box and Whisker/data/CarStrat.csv", row.names = FALSE)
+
+#write.csv(CarDissem,"/Users/charlesrandell/Other/Random projects/Box and Whisker/data/CarDissem.csv", row.names = FALSE)
+
+#write.csv(CarCross,"/Users/charlesrandell/Other/Random projects/Box and Whisker/data/CarCross.csv", row.names = FALSE)
+
+#write.csv(CarJack,"/Users/charlesrandell/Other/Random projects/Box and Whisker/data/CarJack.csv", row.names = FALSE)
+
+setwd("/Users/charlesrandell/Other/Random projects/Box and Whisker/data")
+
+CarStrat <- read.csv("CarStrat.csv", header = TRUE)
+
+CarDissem <- read.csv("CarDissem.csv", header = TRUE)
+
+CarCross <- read.csv("CarCross.csv", header = TRUE)
+
+CarJack <- read.csv("CarJack.csv", header = TRUE)
+
 
 ```
 
-
-## Lets see what happens...
-##
+## Tidyr
+Lets see what happens...
+Changing the data imported in wide format into a long tidy format
 ```{r}
 
 TidyCarCross <- CarCross %>% tidyr::gather(Header, val)
@@ -48,9 +73,9 @@ TidyCarJack <- CarJack  %>% tidyr::gather(Header, val)
 
 ```
 
-
-## This creates the new variable that has the extra column with the added indicator to be merged to the final dataset
-## The use of the tidyverse to convert the data into a long format rather that a wide so that ggplot2 can create the boxplot with it
+## dplyr
+This creates the new variable that has the extra column with the added indicator to be merged to the final dataset.
+The use of the tidyverse to convert the data into a long format rather that a wide so that ggplot2 can create the boxplot with it
 
 ```{r}
 Tcarcross <- TidyCarCross %>% mutate(Classes = "4CarCross")
@@ -64,28 +89,25 @@ Tcarjack <- TidyCarJack %>% mutate(Classes = "3CarJack")
 
 ```
 
-
-### Bind the datasets together
-### Secondly the readings that are below the detectable level are filtered out 
+## binding and filtering the data
+Bind the datasets together
+Secondly the readings that are below the detectable level are filtered out 
 ```{r}
 Final <- rbind.data.frame(Tcarstrat, Tcardissem, Tcarcross, Tcarjack)
 Final <- Final %>% filter(val != "Below LOD")
 Final <- Final %>% filter(Header != "Te_ppm_m125")
 ```
 
-
-## mutate function that can remove certain phrases within values in a column 
+## gsub to format elements
+mutate function that can remove certain phrases within values in a column 
 
 ```{r}
 Final <- Final %>% mutate(Header = gsub("_ppm", "", Header))
 Final <- Final %>% mutate(Header = gsub("_m126", "", Header))
 ```
 
-
-
-### Convert the variable Classes and Header from a character to a factor variable
-### Convert the value variable from a character to a numerical variable - this is very important and the code will not run without it
-
+Convert the variable Classes and Header from a character to a factor variable
+Convert the value variable from a character to a numerical variable - this is very important and the code will not run without it
 ```{r}
 Final[, 'Classes'] <- as.factor(Final[, 'Classes'])
 Final[, 'val'] <- as.numeric(Final[, 'val'])
@@ -93,32 +115,29 @@ Final[, 'Header'] <- as.factor(Final[, 'Header'])
 ```
 
 
-## Firstly the outliers are removed, any value that exceeds 150 is taked out
-
+Firstly the outliers are removed, any value that exceeds 150 is taked out
 ```{r}
 Final <- Final %>% filter(val < 150)
 ```
 
-
-## The plot is constructed using ggplot, with two iterations of the same graph, the first shows the raw output on a linear scale
-## And second has a log scale y axis, along with updated labels and different colour palette
+## ggplot to create graphs 
+The plot is constructed using ggplot, with two iterations of the same graph, the first shows the raw output on a linear scale
+And second has a log scale y axis, along with updated labels and different colour palette
 ```{r}
-## The Main ggplot
+# The Main ggplot
+
 sfplot <- ggplot(Final, aes(x=Header, y=val, fill=Classes)) + 
     geom_boxplot(outlier.size = 0.01) + stat_summary(fun = mean, shape = 4, aes(group=Classes), position=position_dodge(0.75), show.legend = FALSE, color="black", size=0.25)
 
 sfplot
-## For some reason this is what worked for the color codes to range from 2-5
+
+# For some reason this is what worked for the color codes to range from 2-5
 
 wes1 <- wes_palette("FantasticFox1")[2:5]
 roy2 <- wes_palette("Royal2")[1:3]
-c1 <- colorspaces("#99FF99")
-## the first iteration
-
-sfplot + scale_x_discrete(limits=c("Zn_ppm", "Ga_ppm", "Ge_ppm", "Se_ppm", "Mo_ppm", "Ag_ppm", "Cd_ppm", "In_ppm", "Sb_ppm", "Te_ppm_m125", "Te_ppm_m126", "Au_ppm", "Pb_ppm", "Bi_ppm")) 
 
 
-## The Final Wes Anderson themed plot
+# The Final Wes Anderson themed plot
 
 sfplot  +
 coord_trans(y = "log") + scale_y_continuous(breaks = c(0.01, 0.1, 1, 10, 100), labels = c(0.01, 0.1, 1, 10, 100)) + labs(x="Elements", y = "Log (Concentrations) / ppm") + theme(legend.position="bottom") + scale_fill_manual(guide = guide_legend(title = ""), breaks=c("1CarStrat", "2CarDissem", "3CarJack", "4CarCross"), values=c(wes1), labels=c("Stratiform Carrollite", "Disseminated Carrollite", "Jack Vein Carrollite", "Cross-Cutting Vein Carrollite")) + theme(axis.text.x = element_text(size=12, face = "bold"), axis.text.y = element_text(size=12, face = "bold"), legend.text=element_text(size=14), axis.title=element_text(size=15,face="bold"))
