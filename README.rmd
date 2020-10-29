@@ -1,13 +1,20 @@
 ---
-Title: README
-output:
-  md_document: default
-  github_document: default
+Title: Geological R project
+output: github_document
 ---
+
+```{r}
+knitr::opts_chunk$set(
+  warning = FALSE, # show warnings
+  message = TRUE, # show messages
+  error = TRUE, # do not interrupt generation in case of errors,
+  echo = TRUE  # show R code
+)
+```
 
 # Geological visualization of elements
 
-The aim of this folder is to.... create a grouped box and whisker plot with the ggplot2 package that shows a variety of trace element concentrations in different forms of Carrollite in the central African Copperbelt 
+The aim of this folder is to.... create a grouped box and whisker plot with the ggplot2 package for visualization of a variety of trace element concentrations in different forms of Carrollite in the central African Copperbelt, then a principle component analysis on the different styles of mineralization
 
 load packages in R 
 
@@ -15,6 +22,8 @@ load packages in R
 library(ggplot2) 
 pacman::p_load(tidyverse)
 library(wesanderson)
+library(FactoMineR)
+library(factoextra)
 
 ```
 
@@ -27,8 +36,6 @@ this will not work without it being copied!!
 ```{r}
 # copying the data in 
 
-#CarStrat <- read.table(pipe("pbpaste"), sep="\t", header = TRUE)
-
 #CarDissem <- read.table(pipe("pbpaste"), sep="\t", header = TRUE)
 
 #CarCross <- read.table(pipe("pbpaste"), sep="\t", header = TRUE)
@@ -37,7 +44,7 @@ this will not work without it being copied!!
 
 # moving it to csv files for the knit function
 
-#write.csv(CarStrat,"/Users/charlesrandell/Other/Random projects/Box and Whisker/data/CarStrat.csv", row.names = FALSE)
+#write.csv(combination,"/Users/charlesrandell/Other/Random projects/Box and Whisker/data/Combination.csv", row.names = FALSE)
 
 #write.csv(CarDissem,"/Users/charlesrandell/Other/Random projects/Box and Whisker/data/CarDissem.csv", row.names = FALSE)
 
@@ -54,6 +61,8 @@ CarDissem <- read.csv("CarDissem.csv", header = TRUE)
 CarCross <- read.csv("CarCross.csv", header = TRUE)
 
 CarJack <- read.csv("CarJack.csv", header = TRUE)
+
+combination <- read.csv("Combination.csv", header = TRUE)
 
 
 ```
@@ -145,7 +154,60 @@ coord_trans(y = "log") + scale_y_continuous(breaks = c(0.01, 0.1, 1, 10, 100), l
 ```
 
 
+## t tests
+
+```{r}
+CarCross <- mutate_all(CarCross, function(x) as.numeric(as.character(x)))
+CarDissem <- mutate_all(CarDissem, function(x) as.numeric(as.character(x)))
+CarJack <- mutate_all(CarJack, function(x) as.numeric(as.character(x)))
+CarStrat <- mutate_all(CarStrat, function(x) as.numeric(as.character(x)))
+
+combination <- mutate_all(combination, function(x) as.numeric(as.character(x)))
+
+CarCross[is.na(CarCross)] <- 0
+combination[is.na(combination)] <- 0
+
+t.test(CarCross$Zn_ppm, combination$Zn_ppm)
+
+confidence_interval <- function(vector, interval) {
+  # Standard deviation of sample
+  vec_sd <- sd(vector)
+  # Sample size
+  n <- length(vector)
+  # Mean of sample
+  vec_mean <- mean(vector)
+  # Error according to t distribution
+  error <- qt((interval + 1)/2, df = n - 1) * vec_sd / sqrt(n)
+  # Confidence interval as a vector
+  result <- c("lower" = vec_mean - error, "upper" = vec_mean + error)
+  return(result)
+}
+
+```
+
+# pca
+
+This section will perform a principle component analysis on the all of the grouped data with the "Below LOD" 
+reduced to zero, and an identification style attached to each dataset. 
+
+```{r}
+CarStrat$Classes <- 'CarStrat'
+CarCross$Classes <- "CarCross"
+CarDissem$Classes <- "CarDissem"
+CarJack$Classes <- "CarJack"
+
+pcat <- rbind(CarStrat, CarCross, CarDissem, CarJack)
+pcat[, 'Classes'] <- as.factor(pcat[, 'Classes'])
+
+car.pca <- PCA(pcat %>% select(-Classes), graph = FALSE)
+
+pcat[is.na(pcat)] <- 0
 
 
+fviz_pca_biplot(car.pca, habillage = pcat$Classes, addEllipses = TRUE, 
+    col.var = "red", alpha.var = "cos2", label = "var") + scale_color_brewer(palette = "Dark2") + 
+    theme_minimal()
+
+```
 
 
