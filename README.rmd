@@ -34,22 +34,10 @@ loading the excel data via clipboard
 this will not work without it being copied!!
 
 ```{r}
-# copying the data in 
-
-#CarDissem <- read.table(pipe("pbpaste"), sep="\t", header = TRUE)
-
-#CarCross <- read.table(pipe("pbpaste"), sep="\t", header = TRUE)
-
+# This is just an easy way of copying in the data and then once local storage is required the write.csv can 
+# be used so that the data can be knitted
 #CarJack <- read.table(pipe("pbpaste"), sep="\t", header = TRUE)
-
 # moving it to csv files for the knit function
-
-#write.csv(combination,"/Users/charlesrandell/Other/Random projects/Box and Whisker/data/Combination.csv", row.names = FALSE)
-
-#write.csv(CarDissem,"/Users/charlesrandell/Other/Random projects/Box and Whisker/data/CarDissem.csv", row.names = FALSE)
-
-#write.csv(CarCross,"/Users/charlesrandell/Other/Random projects/Box and Whisker/data/CarCross.csv", row.names = FALSE)
-
 #write.csv(CarJack,"/Users/charlesrandell/Other/Random projects/Box and Whisker/data/CarJack.csv", row.names = FALSE)
 
 setwd("/Users/charlesrandell/Other/Random projects/Box and Whisker/data")
@@ -168,6 +156,19 @@ CarCross[is.na(CarCross)] <- 0
 combination[is.na(combination)] <- 0
 
 t.test(CarCross$Zn_ppm, combination$Zn_ppm)
+t.test(CarCross$Te_ppm, combination$Te_ppm)
+t.test(CarCross$Sn_ppm, combination$Sn_ppm)
+t.test(CarCross$Se_ppm, combination$Se_ppm)
+t.test(CarCross$Sb_ppm, combination$Sb_ppm)
+t.test(CarCross$Pb_ppm, combination$Pb_ppm)
+t.test(CarCross$Mo_ppm, combination$Mo_ppm)
+t.test(CarCross$In_ppm, combination$In_ppm)
+t.test(CarCross$Ge_ppm, combination$Ge_ppm)
+t.test(CarCross$Ga_ppm, combination$Ga_ppm)
+t.test(CarCross$Cd_ppm, combination$Cd_ppm)
+t.test(CarCross$Bi_ppm, combination$Bi_ppm)
+t.test(CarCross$Au_ppm, combination$Au_ppm)
+t.test(CarCross$Ag_ppm, combination$Ag_ppm)
 
 confidence_interval <- function(vector, interval) {
   # Standard deviation of sample
@@ -202,6 +203,8 @@ pcat[, 'Classes'] <- as.factor(pcat[, 'Classes'])
 car.pca <- PCA(pcat %>% select(-Classes), graph = FALSE)
 
 pcat[is.na(pcat)] <- 0
+
+fviz_contrib(car.pca, choice = "var", axes = 1)
 
 
 fviz_pca_biplot(car.pca, habillage = pcat$Classes, addEllipses = TRUE, 

@@ -35,22 +35,10 @@ loading the excel data via clipboard this will not work without it being
 copied\!\!
 
 ``` r
-# copying the data in 
-
-#CarDissem <- read.table(pipe("pbpaste"), sep="\t", header = TRUE)
-
-#CarCross <- read.table(pipe("pbpaste"), sep="\t", header = TRUE)
-
+# This is just an easy way of copying in the data and then once local storage is required the write.csv can 
+# be used so that the data can be knitted
 #CarJack <- read.table(pipe("pbpaste"), sep="\t", header = TRUE)
-
 # moving it to csv files for the knit function
-
-#write.csv(combination,"/Users/charlesrandell/Other/Random projects/Box and Whisker/data/Combination.csv", row.names = FALSE)
-
-#write.csv(CarDissem,"/Users/charlesrandell/Other/Random projects/Box and Whisker/data/CarDissem.csv", row.names = FALSE)
-
-#write.csv(CarCross,"/Users/charlesrandell/Other/Random projects/Box and Whisker/data/CarCross.csv", row.names = FALSE)
-
 #write.csv(CarJack,"/Users/charlesrandell/Other/Random projects/Box and Whisker/data/CarJack.csv", row.names = FALSE)
 
 setwd("/Users/charlesrandell/Other/Random projects/Box and Whisker/data")
@@ -197,6 +185,214 @@ t.test(CarCross$Zn_ppm, combination$Zn_ppm)
     ##  16.61388   5.03657
 
 ``` r
+t.test(CarCross$Te_ppm, combination$Te_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  CarCross$Te_ppm and combination$Te_ppm
+    ## t = 0.24777, df = 42.736, p-value = 0.8055
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -0.08807555  0.11274328
+    ## sample estimates:
+    ## mean of x mean of y 
+    ## 0.1866250 0.1742911
+
+``` r
+t.test(CarCross$Sn_ppm, combination$Sn_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  CarCross$Sn_ppm and combination$Sn_ppm
+    ## t = -3.9063, df = 79.128, p-value = 0.0001963
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -0.9180788 -0.2982883
+    ## sample estimates:
+    ## mean of x mean of y 
+    ##  0.675500  1.283684
+
+``` r
+t.test(CarCross$Se_ppm, combination$Se_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  CarCross$Se_ppm and combination$Se_ppm
+    ## t = 2.2612, df = 41.412, p-value = 0.02906
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##   1.31094 23.15844
+    ## sample estimates:
+    ## mean of x mean of y 
+    ##  32.70469  20.47000
+
+``` r
+t.test(CarCross$Sb_ppm, combination$Sb_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  CarCross$Sb_ppm and combination$Sb_ppm
+    ## t = 0.58141, df = 47.478, p-value = 0.5637
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -2.614152  4.740165
+    ## sample estimates:
+    ## mean of x mean of y 
+    ##  16.39997  15.33696
+
+``` r
+t.test(CarCross$Pb_ppm, combination$Pb_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  CarCross$Pb_ppm and combination$Pb_ppm
+    ## t = 0.55339, df = 76.619, p-value = 0.5816
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -12.3587  21.8707
+    ## sample estimates:
+    ## mean of x mean of y 
+    ##  28.05003  23.29403
+
+``` r
+t.test(CarCross$Mo_ppm, combination$Mo_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  CarCross$Mo_ppm and combination$Mo_ppm
+    ## t = 2.6768, df = 41.345, p-value = 0.01061
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  1.386401 9.897097
+    ## sample estimates:
+    ## mean of x mean of y 
+    ## 12.593813  6.952063
+
+``` r
+t.test(CarCross$In_ppm, combination$In_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  CarCross$In_ppm and combination$In_ppm
+    ## t = 2.4922, df = 35.887, p-value = 0.01745
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  0.01123388 0.10947324
+    ## sample estimates:
+    ##  mean of x  mean of y 
+    ## 0.10411875 0.04376519
+
+``` r
+t.test(CarCross$Ge_ppm, combination$Ge_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  CarCross$Ge_ppm and combination$Ge_ppm
+    ## t = 2.6741, df = 32.87, p-value = 0.01158
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  0.02003699 0.14760146
+    ## sample estimates:
+    ## mean of x mean of y 
+    ## 0.3537812 0.2699620
+
+``` r
+t.test(CarCross$Ga_ppm, combination$Ga_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  CarCross$Ga_ppm and combination$Ga_ppm
+    ## t = 0.95812, df = 58.932, p-value = 0.3419
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -0.1360807  0.3861135
+    ## sample estimates:
+    ## mean of x mean of y 
+    ## 0.5521063 0.4270899
+
+``` r
+t.test(CarCross$Cd_ppm, combination$Cd_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  CarCross$Cd_ppm and combination$Cd_ppm
+    ## t = 0.70096, df = 59.531, p-value = 0.4861
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -0.1251565  0.2601614
+    ## sample estimates:
+    ## mean of x mean of y 
+    ## 0.2174062 0.1499038
+
+``` r
+t.test(CarCross$Bi_ppm, combination$Bi_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  CarCross$Bi_ppm and combination$Bi_ppm
+    ## t = 3.2645, df = 32.68, p-value = 0.002574
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##   8.017254 34.566371
+    ## sample estimates:
+    ## mean of x mean of y 
+    ## 28.080541  6.788728
+
+``` r
+t.test(CarCross$Au_ppm, combination$Au_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  CarCross$Au_ppm and combination$Au_ppm
+    ## t = -0.86177, df = 70.535, p-value = 0.3917
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -0.01736332  0.00688468
+    ## sample estimates:
+    ##  mean of x  mean of y 
+    ## 0.03340625 0.03864557
+
+``` r
+t.test(CarCross$Ag_ppm, combination$Ag_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  CarCross$Ag_ppm and combination$Ag_ppm
+    ## t = -0.048197, df = 95.661, p-value = 0.9617
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -0.03159172  0.03009402
+    ## sample estimates:
+    ##  mean of x  mean of y 
+    ## 0.07960937 0.08035823
+
+``` r
 confidence_interval <- function(vector, interval) {
   # Standard deviation of sample
   vec_sd <- sd(vector)
@@ -231,10 +427,15 @@ car.pca <- PCA(pcat %>% select(-Classes), graph = FALSE)
 
 pcat[is.na(pcat)] <- 0
 
+fviz_contrib(car.pca, choice = "var", axes = 1)
+```
 
+![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
+``` r
 fviz_pca_biplot(car.pca, habillage = pcat$Classes, addEllipses = TRUE, 
     col.var = "red", alpha.var = "cos2", label = "var") + scale_color_brewer(palette = "Dark2") + 
     theme_minimal()
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-12-2.png)<!-- -->
