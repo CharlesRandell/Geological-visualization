@@ -218,7 +218,7 @@ confidence_interval <- function(vector, interval) {
 ## t test for second dataset Car
 
 ```{r}
-t.test(Chal8$Zn_ppm, Car88$Zn_ppm)
+t.test(Car8$Zn_ppm, Car88$Zn_ppm)
 t.test(Car8$Te_ppm, Car88$Te_ppm)
 t.test(Car8$Sn_ppm, Car88$Sn_ppm)
 t.test(Car8$Se_ppm, Car88$Se_ppm)

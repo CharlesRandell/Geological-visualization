@@ -441,20 +441,20 @@ confidence_interval <- function(vector, interval) {
 ## t test for second dataset Car
 
 ``` r
-t.test(Chal8$Zn_ppm, Car88$Zn_ppm)
+t.test(Car8$Zn_ppm, Car88$Zn_ppm)
 ```
 
     ## 
     ##  Welch Two Sample t-test
     ## 
-    ## data:  Chal8$Zn_ppm and Car88$Zn_ppm
-    ## t = 8.2067, df = 32.995, p-value = 1.783e-09
+    ## data:  Car8$Zn_ppm and Car88$Zn_ppm
+    ## t = 2.4521, df = 80.124, p-value = 0.01638
     ## alternative hypothesis: true difference in means is not equal to 0
     ## 95 percent confidence interval:
-    ##  12.12457 20.11776
+    ##  0.6161109 5.9230163
     ## sample estimates:
     ## mean of x mean of y 
-    ## 18.014063  1.892895
+    ##  5.162458  1.892895
 
 ``` r
 t.test(Car8$Te_ppm, Car88$Te_ppm)
