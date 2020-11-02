@@ -8,13 +8,12 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Geological visualization of elements
+# Geology masters code
 
-The aim of this folder is to…. create a grouped box and whisker plot
-with the ggplot2 package for visualization of a variety of trace element
-concentrations in different forms of Carrollite in the central African
-Copperbelt, then a principle component analysis on the different styles
-of mineralization
+The aim of this folder is to…. statistically and graphically observe the
+differences in a variety of trace element concentrations in different
+forms of Carrollite in the central African Copperbelt, then a principle
+component analysis on the different styles of mineralization
 
 load packages in R
 
@@ -37,9 +36,9 @@ copied\!\!
 ``` r
 # This is just an easy way of copying in the data and then once local storage is required the write.csv can 
 # be used so that the data can be knitted
-#CarJack <- read.table(pipe("pbpaste"), sep="\t", header = TRUE)
+#Car8 <- read.table(pipe("pbpaste"), sep="\t", header = TRUE)
 # moving it to csv files for the knit function
-#write.csv(CarJack,"/Users/charlesrandell/Other/Random projects/Box and Whisker/data/CarJack.csv", row.names = FALSE)
+#write.csv(Car8,"/Users/charlesrandell/Other/Random projects/Box and Whisker/data/Car8.csv", row.names = FALSE)
 
 setwd("/Users/charlesrandell/Other/Random projects/Box and Whisker/data")
 
@@ -52,6 +51,14 @@ CarCross <- read.csv("CarCross.csv", header = TRUE)
 CarJack <- read.csv("CarJack.csv", header = TRUE)
 
 combination <- read.csv("Combination.csv", header = TRUE)
+
+Chal88 <- read.csv("Chal88.csv", header = TRUE)
+
+Chal8 <- read.csv("Chal8.csv", header = TRUE)
+
+Car88 <- read.csv("Car8.csv", header = TRUE)
+
+Car8 <- read.csv("Car88.csv", header = TRUE)
 ```
 
 ## Tidyr
@@ -163,6 +170,29 @@ CarCross <- mutate_all(CarCross, function(x) as.numeric(as.character(x)))
 CarDissem <- mutate_all(CarDissem, function(x) as.numeric(as.character(x)))
 CarJack <- mutate_all(CarJack, function(x) as.numeric(as.character(x)))
 CarStrat <- mutate_all(CarStrat, function(x) as.numeric(as.character(x)))
+
+
+myfunc <-function(x) { 
+  x %>%
+    mutate_all(function(x) as.numeric(as.character(x)))
+}
+
+# apply function to make all numeric
+
+Car8 <- myfunc(Car8)
+Car88 <- myfunc(Car88)
+Chal8 <- myfunc(Chal8)
+Chal88 <- myfunc(Chal88)
+
+
+# make the nas zero
+
+Car8[is.na(Car8)] <- 0
+Car88[is.na(Car88)] <- 0
+Chal8[is.na(Chal8)] <- 0
+Chal88[is.na(Chal88)] <- 0
+
+# apply function to all datasets 
 
 combination <- mutate_all(combination, function(x) as.numeric(as.character(x)))
 
@@ -408,6 +438,458 @@ confidence_interval <- function(vector, interval) {
 }
 ```
 
+## t test for second dataset Car
+
+``` r
+t.test(Chal8$Zn_ppm, Car88$Zn_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  Chal8$Zn_ppm and Car88$Zn_ppm
+    ## t = 8.2067, df = 32.995, p-value = 1.783e-09
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  12.12457 20.11776
+    ## sample estimates:
+    ## mean of x mean of y 
+    ## 18.014063  1.892895
+
+``` r
+t.test(Car8$Te_ppm, Car88$Te_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  Car8$Te_ppm and Car88$Te_ppm
+    ## t = 8.2686, df = 73.51, p-value = 4.203e-12
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  0.1338973 0.2189302
+    ## sample estimates:
+    ##   mean of x   mean of y 
+    ## 0.180361111 0.003947368
+
+``` r
+t.test(Car8$Sn_ppm, Car88$Sn_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  Car8$Sn_ppm and Car88$Sn_ppm
+    ## t = 4.03, df = 31.386, p-value = 0.0003304
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  0.3980359 1.2128965
+    ## sample estimates:
+    ## mean of x mean of y 
+    ## 1.2342083 0.4287421
+
+``` r
+t.test(Car8$Se_ppm, Car88$Se_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  Car8$Se_ppm and Car88$Se_ppm
+    ## t = 1.837, df = 30.522, p-value = 0.07597
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -0.9024073 17.1675681
+    ## sample estimates:
+    ## mean of x mean of y 
+    ##  20.83153  12.69895
+
+``` r
+t.test(Car8$Sb_ppm, Car88$Sb_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  Car8$Sb_ppm and Car88$Sb_ppm
+    ## t = 1.6771, df = 19.863, p-value = 0.1092
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -1.597506 14.672313
+    ## sample estimates:
+    ## mean of x mean of y 
+    ## 15.321667  8.784263
+
+``` r
+t.test(Car8$Pb_ppm, Car88$Pb_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  Car8$Pb_ppm and Car88$Pb_ppm
+    ## t = -0.06109, df = 30.105, p-value = 0.9517
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -25.28351  23.81462
+    ## sample estimates:
+    ## mean of x mean of y 
+    ##  22.00150  22.73595
+
+``` r
+t.test(Car8$Mo_ppm, Car88$Mo_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  Car8$Mo_ppm and Car88$Mo_ppm
+    ## t = 4.9934, df = 67.18, p-value = 4.469e-06
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  3.309042 7.715746
+    ## sample estimates:
+    ## mean of x mean of y 
+    ##  7.496083  1.983689
+
+``` r
+t.test(Car8$In_ppm, Car88$In_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  Car8$In_ppm and Car88$In_ppm
+    ## t = -0.74493, df = 18.239, p-value = 0.4658
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -0.2450851  0.1166889
+    ## sample estimates:
+    ##  mean of x  mean of y 
+    ## 0.04446875 0.10866684
+
+``` r
+t.test(Car8$Ge_ppm, Car88$Ge_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  Car8$Ge_ppm and Car88$Ge_ppm
+    ## t = -8.4696, df = 18.053, p-value = 1.054e-07
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -1.5865630 -0.9559984
+    ## sample estimates:
+    ## mean of x mean of y 
+    ## 0.2696667 1.5409474
+
+``` r
+t.test(Car8$Ga_ppm, Car88$Ga_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  Car8$Ga_ppm and Car88$Ga_ppm
+    ## t = 0.93733, df = 30.691, p-value = 0.3559
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -0.1733037  0.4678481
+    ## sample estimates:
+    ## mean of x mean of y 
+    ## 0.4426722 0.2954000
+
+``` r
+t.test(Car8$Cd_ppm, Car88$Cd_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  Car8$Cd_ppm and Car88$Cd_ppm
+    ## t = 2.2612, df = 74.957, p-value = 0.02665
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  0.01584533 0.25044765
+    ## sample estimates:
+    ##  mean of x  mean of y 
+    ## 0.15878333 0.02563684
+
+``` r
+t.test(Car8$Bi_ppm, Car88$Bi_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  Car8$Bi_ppm and Car88$Bi_ppm
+    ## t = 2.9851, df = 88.428, p-value = 0.003666
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  1.246627 6.211266
+    ## sample estimates:
+    ## mean of x mean of y 
+    ##  7.328215  3.599268
+
+``` r
+t.test(Car8$Au_ppm, Car88$Au_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  Car8$Au_ppm and Car88$Au_ppm
+    ## t = 5.1269, df = 67.525, p-value = 2.669e-06
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  0.01653464 0.03761214
+    ## sample estimates:
+    ##  mean of x  mean of y 
+    ## 0.04019444 0.01312105
+
+``` r
+t.test(Car8$Ag_ppm, Car88$Ag_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  Car8$Ag_ppm and Car88$Ag_ppm
+    ## t = 6.4337, df = 74.927, p-value = 1.052e-08
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  0.05528976 0.10488743
+    ## sample estimates:
+    ##   mean of x   mean of y 
+    ## 0.087683333 0.007594737
+
+## t test for third dataset Chal
+
+``` r
+t.test(Chal8$Zn_ppm, Chal88$Zn_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  Chal8$Zn_ppm and Chal88$Zn_ppm
+    ## t = 1.1856, df = 30.794, p-value = 0.2449
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -2.939335 11.095695
+    ## sample estimates:
+    ## mean of x mean of y 
+    ##  18.01406  13.93588
+
+``` r
+t.test(Chal8$Te_ppm, Chal88$Te_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  Chal8$Te_ppm and Chal88$Te_ppm
+    ## t = -2.2455, df = 16.008, p-value = 0.03921
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -0.61395197 -0.01768038
+    ## sample estimates:
+    ## mean of x mean of y 
+    ## 0.0031250 0.3189412
+
+``` r
+t.test(Chal8$Sn_ppm, Chal88$Sn_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  Chal8$Sn_ppm and Chal88$Sn_ppm
+    ## t = -1.5947, df = 26.813, p-value = 0.1225
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -5.109950  0.641457
+    ## sample estimates:
+    ## mean of x mean of y 
+    ##  4.432812  6.667059
+
+``` r
+t.test(Chal8$Se_ppm, Chal88$Se_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  Chal8$Se_ppm and Chal88$Se_ppm
+    ## t = -1.5085, df = 40.127, p-value = 0.1393
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -11.641370   1.690157
+    ## sample estimates:
+    ## mean of x mean of y 
+    ##  14.94969  19.92529
+
+``` r
+t.test(Chal8$Sb_ppm, Chal88$Sb_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  Chal8$Sb_ppm and Chal88$Sb_ppm
+    ## t = -1.6221, df = 16.22, p-value = 0.124
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -3.0759899  0.4075031
+    ## sample estimates:
+    ## mean of x mean of y 
+    ## 0.8840625 2.2183059
+
+``` r
+t.test(Chal8$Pb_ppm, Chal88$Pb_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  Chal8$Pb_ppm and Chal88$Pb_ppm
+    ## t = 2.0589, df = 40.55, p-value = 0.04597
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##   0.2628433 27.7258699
+    ## sample estimates:
+    ## mean of x mean of y 
+    ##  35.01906  21.02471
+
+``` r
+t.test(Chal8$Mo_ppm, Chal88$Mo_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  Chal8$Mo_ppm and Chal88$Mo_ppm
+    ## t = -1.69, df = 18.247, p-value = 0.108
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -0.64390391  0.06948479
+    ## sample estimates:
+    ## mean of x mean of y 
+    ## 0.1534375 0.4406471
+
+``` r
+t.test(Chal8$In_ppm, Chal88$In_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  Chal8$In_ppm and Chal88$In_ppm
+    ## t = -9.6405, df = 17.011, p-value = 2.625e-08
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -10.624412  -6.809264
+    ## sample estimates:
+    ## mean of x mean of y 
+    ##   2.71375  11.43059
+
+``` r
+t.test(Chal8$Ge_ppm, Chal88$Ge_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  Chal8$Ge_ppm and Chal88$Ge_ppm
+    ## t = -3.0484, df = 28.847, p-value = 0.004888
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -1.5000510 -0.2952726
+    ## sample estimates:
+    ## mean of x mean of y 
+    ##  2.123750  3.021412
+
+``` r
+t.test(Chal8$Ga_ppm, Chal88$Ga_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  Chal8$Ga_ppm and Chal88$Ga_ppm
+    ## t = 1.5917, df = 34.084, p-value = 0.1207
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -0.192162  1.581405
+    ## sample estimates:
+    ## mean of x mean of y 
+    ##  2.606562  1.911941
+
+``` r
+t.test(Chal8$Cd_ppm, Chal88$Cd_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  Chal8$Cd_ppm and Chal88$Cd_ppm
+    ## t = 2.0328, df = 31.789, p-value = 0.05049
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -0.0007022755  0.6146213932
+    ## sample estimates:
+    ##  mean of x  mean of y 
+    ## 0.37531250 0.06835294
+
+``` r
+t.test(Chal8$Bi_ppm, Chal88$Bi_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  Chal8$Bi_ppm and Chal88$Bi_ppm
+    ## t = -3.3544, df = 16.732, p-value = 0.003829
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -40.066960  -9.102988
+    ## sample estimates:
+    ## mean of x mean of y 
+    ##  5.323437 29.908412
+
+``` r
+t.test(Chal8$Au_ppm, Chal88$Au_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  Chal8$Au_ppm and Chal88$Au_ppm
+    ## t = -1.7431, df = 34.535, p-value = 0.09022
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -0.047046167  0.003590284
+    ## sample estimates:
+    ##  mean of x  mean of y 
+    ## 0.01562500 0.03735294
+
+``` r
+t.test(Chal8$Ag_ppm, Chal88$Ag_ppm)
+```
+
+    ## 
+    ##  Welch Two Sample t-test
+    ## 
+    ## data:  Chal8$Ag_ppm and Chal88$Ag_ppm
+    ## t = -0.51159, df = 36.504, p-value = 0.612
+    ## alternative hypothesis: true difference in means is not equal to 0
+    ## 95 percent confidence interval:
+    ##  -0.1693646  0.1011058
+    ## sample estimates:
+    ## mean of x mean of y 
+    ## 0.0750000 0.1091294
+
 # pca
 
 This section will perform a principle component analysis on the all of
@@ -430,7 +912,7 @@ pcat[is.na(pcat)] <- 0
 fviz_contrib(car.pca, choice = "var", axes = 1)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 ``` r
 fviz_pca_biplot(car.pca, habillage = pcat$Classes, addEllipses = TRUE, 
@@ -438,4 +920,4 @@ fviz_pca_biplot(car.pca, habillage = pcat$Classes, addEllipses = TRUE,
     theme_minimal()
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-12-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-14-2.png)<!-- -->
